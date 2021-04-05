@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script written by rl1k 
-# https://github.com/iNoSec
+# https://github.com/iNoSec2
 
 
 ##### (Cosmetic) Colour output
@@ -62,10 +62,9 @@ read -p "Do you want to configure the genetic.config file ? [Y/n]: " genetic
         sudo vi genetic.config;
     else
         echo "Ok?! Let's jump it!!"
+        echo $PWD 
     fi
 msfpayload=$(ls -lat ../../ | head -4 | tail -1 | awk '{print $9}')
-
-# $3 is useless for the moment, i must implement the hidden or nohidden option for ebowla
 
         if [[ $arch == x64 && -z $3 ]]; then
             sudo ./ebowla.py ../../$msfpayload genetic.config;
@@ -81,23 +80,10 @@ msfpayload=$(ls -lat ../../ | head -4 | tail -1 | awk '{print $9}')
             sudo ./build_x86_go.sh output/go_symmetric_$msfpayload.go encoded_msf_payload_x86.exe ;
             sudo rm -rf ../../$msfpayload
             sudo mv ../../*.rc ../../output/
-            sudo mv output/encoded_msf_payload_x64.exe ../../output/
+            sudo mv output/encoded_msf_payload_x86.exe ../../output/
             sudo rm -rf output/*.go
             echo -e "Job done! The encoded payload had been saved: output/encoded_msf_payload_x86.exe"
             exit 1;
-# Will code this choice later
-#        elif [[ $arch == x64 && $3 == --nohidden ]]; then
-#            sudo ./ebowla.py $filename1 genetic.config;
-#            echo "--nohidden detected"
-#            sudo ./build_x64_go.sh output/go_symmetric_$filename1.go $output_ebo $3;
-#            echo "Job done! The encoded payload had been saved: include/Ebowla/output/$output_ebo"
-#            exit 1;
-#        elif [[ $arch == x86 && $3 == --nohidden ]];then
-#            sudo ./ebowla.py $filename1 genetic.config;
-#            echo "--nohidden detected"
-#            sudo ./build_x86_go.sh output/go_symmetric_$filename1.go $output_ebo $3;
-#            echo "Job done! The encoded payload had been saved: include/Ebowla/output/$output_ebo"
-#            exit 1;
         else
             echo "Without the good choice we cant do the job!! Bye!!"
             exit 0;
@@ -126,20 +112,8 @@ output_ebo=encoded_payload_$arch.exe
             sudo ./build_x86_go.sh output/go_symmetric_$filename1.go $output_ebo;
             sudo mv output/$output_ebo ../../output/
             sudo rm -rf output/*.go
-            echo "Job done! The encoded payload had been saved: include/Ebowla/output/$output_ebo"
+            echo "Job done! The encoded payload had been saved: output/$output_ebo"
             exit 1;
-#        elif [[ "$arch" == "x64" ]] && [[ "$hide" == "--nohidden" ]]; then
-#            sudo ./ebowla.py $filename1 genetic.config;
-#            echo "--nohidden detected"
-#            sudo ./build_x64_go.sh output/go_symmetric_$filename1.go $output_ebo $3;
-#            echo "Job done! All have been saved under $ebowla/output directory"
-#            exit 1;
-#        elif [[ "$arch" == "x86" && "$hide" == "--nohidden" ]];then
-#            sudo ./ebowla.py $filename1 genetic.config;
-#            echo "--nohidden detected"
-#            sudo ./build_x86_go.sh output/go_symmetric_$filename1.go $output_ebo $3;
-#            echo "Job done! All have been saved under $ebowla/output directory"
-#            exit 1;
         else
             echo "You must choice an arch!! Dont waste my time Sir!!"
             exit 0;
